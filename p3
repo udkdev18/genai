@@ -1,0 +1,8 @@
+#p3 image generation
+
+import torch
+from diffusers import AutoPipelineForText2Image
+pipe = AutoPipelineForText2Image.from_pretrained("stabilityai/sdxl-turbo", torch_dtype=torch.float16).to("cuda")
+image = pipe("A picture of a cat",
+             num_inference_steps=1, guidance_scale=0.0).images[0]
+image
