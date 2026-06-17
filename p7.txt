@@ -1,1 +1,16 @@
 #p7 RAG moodel
+!pip install faiss-cpu sentence-transformers transformers -q
+import faiss
+from sentence_transformers import SentenceTransformer as S
+from transformers import AutoTokenizer as T, AutoModelForSeq2SeqLM as M
+
+t, m, e = T.from_pretrained("google/flan-t5-small"), M.from_pretrained("google/flan-t5-small"), S('all-MiniLM-L6-v2')
+d = ["AI is intelligence shown by machines.", "BMSITM is in Bengaluru."]
+
+i = faiss.IndexFlatL2(384)
+i.add(e.encode(d))
+
+q = "where is BMSIT?"
+c = d[i.search(e.encode([q]), 1)[1][0][0]]
+
+print(t.decode(m.generate(**t(f"c:{c} q:{q}", return_tensors="pt"), max_new_tokens=50)[0], skip_special_tokens=True))
