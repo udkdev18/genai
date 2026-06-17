@@ -1,0 +1,8 @@
+#p5 code generation LLM
+
+from transformers import pipeline
+
+print(
+    pipeline("text-generation", model="bigcode/starcoder2-3b")
+    ("C program to add two numbers",max_new_tokens=80)[0]["generated_text"]
+)
