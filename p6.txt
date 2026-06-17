@@ -3,27 +3,9 @@
 import google.generativeai as genai
 from PyPDF2 import PdfReader
 
-genai.configure(api_key="YOUR-API-KEY")
+genai.configure(api_key="YOUR_API_KEY")
 
-reader = PdfReader("/usr/colab/Vishnu_Kashyap_D_1BY23AI187_BMSITM.pdf")
-resume = ""
-for page in reader.pages:
-    resume += page.extract_text()
+resume = "".join(page.extract_text() for page in PdfReader("/usr/colab/Vishnu_Kashyap_D_1BY23AI187_BMSITM.pdf").pages)
 
-model = genai.GenerativeModel('gemini-2.5-flash')
-
-prompt = f"""
-Evaluate this resume.
-Provide:
-1. Score out of 10
-2. Strengths
-3. Weaknesses
-4. Missing Skills
-5. Suggestions for Improvement
-
-Resume:
-{resume}
-"""
-
-response = model.generate_content(prompt)
-print(response.text)
+prompt = f"Evaluate this resume. Provide Score out of 10, Strengths, Weaknesses, Missing Skills, and Improvements:\n{resume}"
+print(genai.GenerativeModel('gemini-2.5-flash').generate_content(prompt).text)
