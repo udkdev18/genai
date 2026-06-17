@@ -1,0 +1,8 @@
+#p2 multigingual translator
+
+from transformers import MarianTokenizer, MarianMTModel
+t=MarianTokenizer.from_pretrained("Helsinki-NLP/opus-mt-en-hi")
+m=MarianMTModel.from_pretrained("Helsinki-NLP/opus-mt-en-hi")
+x=t("I Love AI",return_tensors="pt")
+y=m.generate(x["input_ids"])
+print(t.decode(y[0]))
